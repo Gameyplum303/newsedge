@@ -1,0 +1,14 @@
+[theme]
+base = "dark"
+primaryColor = "#60a5fa"
+
+[server]
+headless = false
+# The dashboard has no login and can change the watchlist and start downloads, so only this
+# computer may open it. Set to "0.0.0.0" only on a trusted network, and add authentication first.
+address = "localhost"
+enableXsrfProtection = true
+enableCORS = true
+
+[browser]
+gatherUsageStats = false

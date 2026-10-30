@@ -1,0 +1,11 @@
+streamlit>=1.45
+yfinance>=0.2.60
+feedparser>=6.0
+vaderSentiment>=3.3
+plotly>=5.20
+pandas>=2.2
+numpy>=1.26
+requests>=2.31
+tzdata
+websocket-client>=1.7
+pytest>=8  # tests only
