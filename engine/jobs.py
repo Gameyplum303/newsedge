@@ -84,11 +84,12 @@ def ensure_worker() -> None:
         return
     store.set_meta("worker_heartbeat", _now().isoformat())   # claim first, so two clicks start one worker
     os.makedirs(config.DATA_DIR, exist_ok=True)
-    log = open(os.path.join(config.DATA_DIR, "jobs.log"), "a", encoding="utf-8")
     detach = ({"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS}
               if os.name == "nt" else {"start_new_session": True})
-    subprocess.Popen([sys.executable, "-m", "engine.jobs"], cwd=config.BASE_DIR, stdin=subprocess.DEVNULL,
-                     stdout=log, stderr=subprocess.STDOUT, **detach)
+    # The worker gets its own copy of the handle, so this process can close its copy right away.
+    with open(os.path.join(config.DATA_DIR, "jobs.log"), "a", encoding="utf-8") as log:
+        subprocess.Popen([sys.executable, "-m", "engine.jobs"], cwd=config.BASE_DIR, stdin=subprocess.DEVNULL,
+                         stdout=log, stderr=subprocess.STDOUT, **detach)
 
 
 # ---------------------------------------------------------------- worker

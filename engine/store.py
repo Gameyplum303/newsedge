@@ -104,7 +104,7 @@ def articles_fetched_since(since: str | None) -> pd.DataFrame:
     Rows are fetched through the fetched_at index and grouped in pandas: grouping in SQL makes SQLite
     walk the whole table in id order, which takes minutes on a hard drive.
     """
-    sql = "SELECT id, title, summary, fetched_at FROM articles" + (" WHERE fetched_at > ?" if since else "")
+    sql = "SELECT id, title, summary, fetched_at FROM articles" + (" WHERE fetched_at > ?" if since else "")  # nosec B608: fixed text, value is a parameter
     with _connect() as con:
         rows = pd.read_sql_query(sql, con, params=[since] if since else None)
     rows["summary"] = rows["summary"].fillna("")
@@ -143,7 +143,8 @@ def update_job(job_id: int, **fields) -> None:
     fields["updated_at"] = _now()
     cols = ", ".join(f"{k} = ?" for k in fields)
     with _connect() as con:
-        con.execute(f"UPDATE jobs SET {cols} WHERE id = ?", [*fields.values(), job_id])
+        # nosec B608: column names were checked against JOB_FIELDS above; values are parameters.
+        con.execute(f"UPDATE jobs SET {cols} WHERE id = ?", [*fields.values(), job_id])  # nosec B608
 
 
 def _job_rows(sql: str, params=()) -> list[dict]:
@@ -176,7 +177,7 @@ def open_job(ticker: str) -> dict | None:
 
 def jobs_with_status(*statuses: str) -> list[dict]:
     marks = ",".join("?" * len(statuses))
-    return _job_rows(f"SELECT * FROM jobs WHERE status IN ({marks}) ORDER BY id", statuses)
+    return _job_rows(f"SELECT * FROM jobs WHERE status IN ({marks}) ORDER BY id", statuses)  # nosec B608: only ? placeholders
 
 
 def recent_jobs(hours: float = 24) -> list[dict]:

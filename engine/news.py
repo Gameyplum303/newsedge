@@ -7,7 +7,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
-from typing import Callable
+from collections.abc import Callable
 from urllib.parse import quote, quote_plus
 
 import feedparser
@@ -84,7 +84,7 @@ def _published(entry) -> datetime | None:
 def _article_id(title: str) -> str:
     # Keyed on the normalised headline so the same story from two feeds is stored once.
     norm = re.sub(r"[^a-z0-9]", "", title.lower())
-    return hashlib.sha1(norm.encode()).hexdigest()[:16]
+    return hashlib.sha1(norm.encode(), usedforsecurity=False).hexdigest()[:16]  # a dedupe key, not security
 
 
 _SKIP = {name: re.compile(p) for name, p in config.FEED_SKIP_PATTERNS.items()}

@@ -14,7 +14,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import date, timedelta
-from typing import Callable
+from collections.abc import Callable
 
 from . import alpaca, news, profiles, store
 

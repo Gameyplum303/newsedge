@@ -3,7 +3,7 @@
 Reports accuracy, calibration (claimed vs actual confidence) and a backtest of what trading the
 model's calls would have earned after costs.
 """
-from typing import Callable
+from collections.abc import Callable
 
 import numpy as np
 import pandas as pd
