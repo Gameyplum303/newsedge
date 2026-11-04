@@ -1,3 +1,5 @@
+[![Tests](https://github.com/Gameyplum303/newsedge/actions/workflows/tests.yml/badge.svg)](https://github.com/Gameyplum303/newsedge/actions/workflows/tests.yml)
+
 # NewsEdge
 
 News-driven signals for US stocks. NewsEdge collects business news, links each article to the
@@ -102,9 +104,9 @@ The tests run offline in a few seconds. They cover the market calendar, event cl
 company matching, quote selection and freshness, the model (on a synthetic market with a planted
 news effect), the trade planner and the full pipeline.
 
-## How each requirement is met
+## What it does
 
-| # | Requirement | Where |
+| # | Feature | Where |
 |---|---|---|
 | 1 | Collect business **and world** news and tie it to companies | `engine/news.py`: 11 business feeds (CNBC, MarketWatch, WSJ, Yahoo Finance, Seeking Alpha, Investing.com, Business Insider), 12 world and disaster feeds (BBC, NPR, NYT, Guardian, Al Jazeera, ABC, CBS, CNBC World, GDACS, USGS), plus per-ticker Yahoo, Google News, Google News incident searches and Seeking Alpha feeds. Matches company names, tickers and product names, links world events through supply-chain exposures, and removes cross-feed duplicates. |
 | 2 | % confidence that news moves the stock, and which way | `engine/sentiment.py` scores headlines with VADER plus a finance lexicon and classifies 17 event types. `engine/model.py` outputs **direction confidence** and **impact probability**. |
